@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Urban Planner x Media Specialist</title>
+    <style>
+        /* --- 1. 기본 설정 (Reset & Variables) --- */
+        :root {
+            --bg-color: #0a0a0a; /* 도시의 밤 */
+            --text-main: #ffffff;
+            --text-sub: #a0a0a0;
+            --accent-color: #00f2ea; /* 사이버펑크 시안(Cyan) - 기술과 데이터 상징 */
+            --grid-line: #333333;
+            --font-main: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            --font-mono: 'Courier New', Courier, monospace; /* 데이터/코딩 느낌 */
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+
+        /* --- 2. 네비게이션 (Navigation) --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--grid-line);
+        }
+
+        .logo { font-weight: 700; font-size: 1.2rem; letter-spacing: 1px; }
+        .logo span { color: var(--accent-color); }
+
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 0.9rem; color: var(--text-sub); }
+        .nav-links a:hover { color: var(--accent-color); }
+
+        /* --- 3. 히어로 섹션 (Hero Section) --- */
+        #hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 5%;
+            position: relative;
+            /* 배경에 은은한 그리드 효과 */
+            background-image: 
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 50px 50px;
+            background-position: center;
+        }
+
+        /* 비네팅 효과 (가장자리 어둡게) */
+        #hero::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle, transparent 20%, var(--bg-color) 90%);
+        }
+
+        .hero-content { z-index: 1; max-width: 800px; }
+        
+        .role-tag {
+            font-family: var(--font-mono);
+            color: var(--accent-color);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        h1 {
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 30px;
+            font-weight: 800;
+        }
+
+        .typing-text::after {
+            content: '|';
+            animation: blink 1s infinite;
+        }
+
+        p.description {
+            font-size: 1.1rem;
+            color: var(--text-sub);
+            max-width: 600px;
+            margin-bottom: 40px;
+        }
+
+        .cta-btn {
+            padding: 15px 30px;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            font-family: var(--font-mono);
+            font-weight: bold;
+            display: inline-block;
+        }
+        .cta-btn:hover {
+            background: var(--accent-color);
+            color: var(--bg-color);
+        }
+
+        /* --- 4. 섹션 공통 스타일 (Sections) --- */
+        section { padding: 100px 5%; }
+        
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 50px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .section-title::before {
+            content: '';
+            width: 50px;
+            height: 2px;
+            background: var(--accent-color);
+        }
+
+        /* --- 5. 프로젝트 그리드 (Projects) --- */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .project-card {
+            background: #111;
+            border: 1px solid var(--grid-line);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .project-card:hover { transform: translateY(-10px); border-color: var(--accent-color); }
+
+        .card-image {
+            width: 100%;
+            height: 200px;
+            background-color: #222; /* 이미지 들어갈 자리 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555;
+            font-family: var(--font-mono);
+        }
+
+        .card-info { padding: 25px; }
+        
+        .card-tags {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        .card-info h3 { font-size: 1.5rem; margin-bottom: 10px; }
+        .card-info p { color: var(--text-sub); font-size: 0.95rem; }
+
+        /* --- 6. About & Contact --- */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .stat-box {
+            border-left: 2px solid var(--accent-color);
+            padding-left: 20px;
+            margin-top: 20px;
+        }
+        .stat-box h4 { font-size: 1.2rem; color: var(--text-main); }
+        .stat-box p { font-family: var(--font-mono); color: var(--text-sub); }
+
+        /* --- 7. 애니메이션 (Animations) --- */
+        .hidden {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        
+        .show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* --- 8. 반응형 미디어 쿼리 (Responsive) --- */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .about-content { grid-template-columns: 1fr; }
+            .nav-links { display: none; } /* 모바일 메뉴는 생략함 */
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">U.P <span>x</span> Media</div>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#projects">Districts</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <section id="hero">
+        <div class="hero-content">
+            <span class="role-tag">01. PORTFOLIO</span>
+            <h1>
+                Designing Cities,<br>
+                <span class="typing-text" id="typewriter"></span>
+            </h1>
+            <p class="description">
+                도시의 논리적 데이터를 분석하고, 미디어의 감각적 서사로 공간을 재창조합니다.<br>
+                미디어 커뮤니케이션 & 도시계획 부동산 융합 포트폴리오.
+            </p>
+            <a href="#projects" class="cta-btn">EXPLORE DISTRICTS</a>
+        </div>
+    </section>
+
+    <section id="about" class="hidden">
+        <h2 class="section-title">Who I Am</h2>
+        <div class="about-content">
+            <div>
+                <p style="color: var(--text-sub); margin-bottom: 20px;">
+                    이질적으로 보이는 '도시'와 '미디어'는 사실 <strong>[구조]</strong>와 <strong>[경험]</strong>이라는 공통분모를 가지고 있습니다.
+                    저는 도시 공간의 물리적 제약을 넘어, 디지털 미디어 기술을 통해 새로운 공간 경험을 설계하는 전략가입니다.
+                </p>
+                <div class="stat-box">
+                    <h4>Core Competency</h4>
+                    <p>Urban Analysis / 3D Simulation / Video Directing</p>
+                </div>
+                <div class="stat-box">
+                    <h4>Tool Stack</h4>
+                    <p>Rhino, Grasshopper, Unreal Engine, Premiere Pro, GIS</p>
+                </div>
+            </div>
+            <div style="background: #1a1a1a; height: 300px; display: flex; align-items: center; justify-content: center; border: 1px dashed #333;">
+                <span style="font-family: var(--font-mono); color: #555;">[Profile / 3D Render Image]</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="hidden">
+        <h2 class="section-title">Projects</h2>
+        <div class="project-grid">
+            
+            <article class="project-card">
+                <div class="card-image">GIS / Data Analysis</div>
+                <div class="card-info">
+                    <div class="card-tags">#Urban_Planning #Data</div>
+                    <h3>Urban Analytics</h3>
+                    <p>실제 도시 데이터를 기반으로 한 입지 분석 및 프레이밍 효과 리포트. 논리적 근거를 통해 공간의 가치를 증명합니다.</p>
+                </div>
+            </article>
+
+            <article class="project-card">
+                <div class="card-image">Unreal / Rhino</div>
+                <div class="card-info">
+                    <div class="card-tags">#Simulation #3D_Modeling</div>
+                    <h3>Digital Twin City</h3>
+                    <p>Rhino와 Unreal Engine을 활용한 가상 도시 모델링. 물리적 공간을 디지털 환경으로 완벽하게 이식합니다.</p>
+                </div>
+            </article>
+
+            <article class="project-card">
+                <div class="card-image">Video / Editing</div>
+                <div class="card-info">
+                    <div class="card-tags">#Storytelling #Directing</div>
+                    <h3>Media Narrative</h3>
+                    <p>유튜브 콘텐츠 및 광고 영상 제작. 도시 공간에 서사를 부여하여 사용자 경험을 극대화합니다.</p>
+                </div>
+            </article>
+
+        </div>
+    </section>
+
+    <section id="contact" class="hidden" style="text-align: center; padding: 150px 5%;">
+        <h2 style="font-size: 3rem; margin-bottom: 20px;">Ready to Build?</h2>
+        <p style="color: var(--text-sub); margin-bottom: 40px;">
+            도시와 미디어의 경계에서 새로운 가치를 만듭니다.<br>
+            협업 제안이나 포트폴리오 문의는 언제든 환영합니다.
+        </p>
+        <a href="mailto:email@example.com" class="cta-btn">CONTACT ME</a>
+    </section>
+
+    <footer style="text-align: center; padding: 20px; border-top: 1px solid #222; color: #555; font-size: 0.8rem;">
+        &copy; 2026 Urban Planner x Media Specialist. All rights reserved.
+    </footer>
+
+    <script>
+        // 1. 타이핑 효과 (Typewriter Effect)
+        const textElement = document.getElementById('typewriter');
+        const phrases = ["Crafting Experiences.", "Simulating Future.", "Visualizing Data."];
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+
+        function type() {
+            const currentPhrase = phrases[phraseIndex];
+            
+            if (isDeleting) {
+                textElement.textContent = currentPhrase.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                textElement.textContent = currentPhrase.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            if (!isDeleting && charIndex === currentPhrase.length) {
+                isDeleting = true;
+                setTimeout(type, 2000); // 문장 완성 후 대기 시간
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                setTimeout(type, 500);
+            } else {
+                setTimeout(type, isDeleting ? 50 : 100);
+            }
+        }
+        document.addEventListener('DOMContentLoaded', type);
+
+        // 2. 스크롤 애니메이션 (Intersection Observer)
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                }
+            });
+        }, observerOptions);
+
+        const hiddenElements = document.querySelectorAll('.hidden');
+        hiddenElements.forEach((el) => observer.observe(el));
+    </script>
+</body>
+</html>
